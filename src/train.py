@@ -190,12 +190,13 @@ training_arguments = TrainingArguments(
     lr_scheduler_type=script_args.lr_scheduler_type,
     num_train_epochs=script_args.num_train_epochs,
     save_strategy="epoch",
-    push_to_hub=True,
+    push_to_hub=False,
 )
 
 model, peft_config, tokenizer = create_and_prepare_model(script_args)
 model.config.use_cache = False
-dataset = load_dataset(script_args.dataset_name, split="train")
+# dataset = load_dataset(script_args.dataset_name, split="train")
+dataset = load_dataset("json", data_files=script_args.dataset_name, split="train")
 
 trainer = SFTTrainer(
     model=model,
@@ -221,5 +222,5 @@ for name, module in trainer.model.named_modules():
                 module = module.to(torch.bfloat16)
 
 trainer.train()
-trainer.push_to_hub()
-trainer.model.push_to_hub(trainer.repo.local_dir)
+# trainer.push_to_hub()
+# trainer.model.push_to_hub(trainer.repo.local_dir)
