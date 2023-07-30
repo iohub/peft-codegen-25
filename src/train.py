@@ -189,7 +189,9 @@ training_arguments = TrainingArguments(
     warmup_ratio=script_args.warmup_ratio,
     lr_scheduler_type=script_args.lr_scheduler_type,
     num_train_epochs=script_args.num_train_epochs,
-    save_strategy="epoch",
+    save_strategy="steps",
+    save_steps=500,
+    save_total_limit=5,
     push_to_hub=False,
 )
 
